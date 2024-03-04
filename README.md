@@ -6,7 +6,9 @@ In 1970, mathematician John Horton Conway introduced the Game of Life, a decepti
 
 At its core, Conway's Game of Life is a deceptively simple experiment in emergence and computability. From a handful of rules governing the life and death of cells on a grid, unpredictable complexity blossoms. Patterns evolve, exhibiting behaviors reminiscent of living organisms: self-replication, organized movement, and even rudimentary computation.
 
-### Historical Impact: Beyond its theoretical significance, the Game of Life found practical applications over the years:
+### Historical Impact
+
+Beyond its theoretical significance, the Game of Life found practical applications over the years:
 
 - Modeling: Its ability to simulate dynamic systems made it a tool for modeling phenomena such as population growth, urban patterns, and even the behavior of fundamental particles. For instance, cellular automata similar to the Game of Life have been used to simulate the spread of wildfires, aiding in the development of prediction models.
 - Artificial Life: The Game of Life spurred the field of artificial life, where researchers investigate the creation and simulation of life-like behaviors in computational systems. It served as an early inspiration for self-replicating patterns and evolving systems within computer simulations.
@@ -28,12 +30,12 @@ This project is console application that simulates Conway's Game of Life, emphas
 
 ### Features
 
-- Accurate implementation of the rules of Conway's Game of Life:
-    1. Any live cell with fewer than two live neighbors dies, as if by underpopulation.
-    2. Any live cell with two or three live neighbors lives on to the next generation.
-    3. Any live cell with more than three live neighbors dies, as if by overpopulation.
-    4. Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
-    5. A neighbor is considered any of the eight cells around the current cell, unless it's an edge case (e.g., for the top row, we will consider that there are no neighbors above it).
-- Console Visualization:
-    1. Live cells are represented with the character 'O' and dead cells with a period ('.').
-    2. The grid is displayed in a rectangular format.
+1. Accurate implementation of the rules of Conway's Game of Life:
+    - Any live cell with fewer than two live neighbors dies, as if by underpopulation.
+    - Any live cell with two or three live neighbors lives on to the next generation.
+    - Any live cell with more than three live neighbors dies, as if by overpopulation.
+    - Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+    - A neighbor is considered any of the eight cells around the current cell, unless it's an edge case (e.g., for the top row, we will consider that there are no neighbors above it).
+2. Console Visualization:
+    - Live cells are represented with the character 'O' and dead cells with a period ('.').
+    - The grid is displayed in a rectangular format.
