@@ -16,7 +16,7 @@ Beyond its theoretical significance, the Game of Life found practical applicatio
 
 ## Description
 
-This project is console application that simulates Conway's Game of Life, emphasizing SOLID principles for well-structured, maintainable, and testable code. Users should be able to define an initial grid configuration and observe the evolution of patterns over time. Data persistence will be achieved through JSON files, allowing users to maintain their grid configurations across sessions. The project ensures code quality through unit testing with xUnit.
+This project is a console application that simulates Conway's Game of Life, emphasizing SOLID principles for well-structured, maintainable, and testable code. Users should be able to define an initial grid configuration and observe the evolution of patterns over time. Data persistence will be achieved through JSON files, allowing users to maintain their grid configurations across sessions. The project ensures code quality through unit testing with xUnit.
 
 ### Components
 - ICell Interface: Defines the properties and behaviors of a single cell in the grid (state, neighbors).
