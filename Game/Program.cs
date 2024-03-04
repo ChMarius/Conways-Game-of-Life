@@ -22,9 +22,14 @@ namespace GameOfLife
                 {
                     case "1":
                         Console.WriteLine("\nNo");
+                        // ask user for rows (4-100)
+                        // ask user for columns (4-100)
+                        // init grid
                         break;
                     case "2":
-                        Console.WriteLine("\nHell nah");
+                        Console.WriteLine("\nUnsupported for now");
+                        // ask user for path to json file (absolute?)
+                        // validate the file user chose, like format and min/max sizes (if it even exists lmao)
                         break;
                     case "3":
                         Console.WriteLine("\nExiting...");
