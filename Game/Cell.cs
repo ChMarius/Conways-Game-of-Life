@@ -5,7 +5,7 @@ namespace GameOfLife
         public bool CellState { get; private set; }
         public bool GetCellState()
         {
-            return CellState;
+            return CellState; // alive if true, dead if false
         }
         public void SetCellState(bool cellState)
         {
