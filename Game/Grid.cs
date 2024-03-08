@@ -10,6 +10,7 @@ namespace GameOfLife
         {
             Rows = rows;
             Columns = columns;
+            Generation = 0;
         }
 
         public void SetGrid()

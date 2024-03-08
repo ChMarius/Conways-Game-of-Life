@@ -1,6 +1,7 @@
 {
   "Rows": 4,  
-  "Columns": 5,  
+  "Columns": 5,
+  "Generation": 0,  
   "Cells": [
     [false, false, true, false, false],
     [false, false, false, true, false],

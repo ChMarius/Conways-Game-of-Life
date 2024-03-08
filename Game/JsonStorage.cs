@@ -9,14 +9,17 @@ namespace GameOfLife
         {
             var gridJson = File.ReadAllText(filePath);
             Grid grid = JsonSerializer.Deserialize<Grid>(gridJson);
-            Console.WriteLine(grid.Cells);
-            grid.UpdateGrid(grid.Cells);
-            grid.SetGrid();
-            grid.SetGeneration(grid.Generation);
+            
         }
         public void StoreGrid()
         {
-
+            int rows=5;
+            int columns=4;
+            Grid grid = new(rows,columns);
+            grid.RandomizeGrid();
+            string fileName = "Grids\\grid2.json";
+            string jsonString = JsonSerializer.Serialize(grid);
+            File.WriteAllText(fileName,jsonString);
         }
 
 

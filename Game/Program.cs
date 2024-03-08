@@ -17,17 +17,17 @@ namespace GameOfLife
                 Console.Write("Select an option: ");
 
                 var option = Console.ReadLine();
-
+                JsonStorage json=new();
                 switch (option)
                 {
                     case "1":
                         Console.WriteLine("\nNo");
+                        json.StoreGrid();
                         // ask user for rows (4-100)
                         // ask user for columns (4-100)
                         // init grid
                         break;
                     case "2":
-                        JsonStorage json = new();
                         JsonStorage.filePath ="Grids\\grid.json";
                         json.LoadGrid();
                         break;
