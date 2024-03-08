@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Conways_Game_of_Life;
+using System;
 
 namespace GameOfLife
 {
@@ -6,6 +7,18 @@ namespace GameOfLife
     {
         public static void Main(string[] args)
         {
+            string[] MenuOptions = new string[]
+            {
+                "Conway's Game of Life",
+                "1. Create a new random grid",
+                "2. Load grid from JSON file",
+                "3. Exit"
+            };
+
+            Menu MainMenu = new Menu(MenuOptions);
+
+            MainMenu.PrintMenu();
+
             bool continueDisplay = true;
 
             while (continueDisplay)
