@@ -6,14 +6,21 @@ namespace GameOfLife
         public int Generation { get; private set; }
         public int Rows { get; private set; }
         public int Columns { get; private set; }
-        public Grid(int rows, int columns, bool randomize)
+        public Grid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
-            if (randomize)
-                RandomizeGrid();
         }
-        private void RandomizeGrid()
+
+        public void SetGrid()
+        {
+            for (int i = 0; i < Columns; i++)
+                for (int j = 0; j < Rows; j++)
+                   if(Cells[i][j].CellState) { Console.Write("O"); }
+                   else { Console.Write("."); }
+        } 
+        
+        public void RandomizeGrid()
         {
             Random rand = new();
             bool randomState = rand.NextDouble() >= 0.5;

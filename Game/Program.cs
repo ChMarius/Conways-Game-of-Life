@@ -27,9 +27,9 @@ namespace GameOfLife
                         // init grid
                         break;
                     case "2":
-                        Console.WriteLine("\nUnsupported for now");
-                        // ask user for path to json file (absolute?)
-                        // validate the file user chose, like format and min/max sizes (if it even exists lmao)
+                        JsonStorage json = new();
+                        JsonStorage.filePath ="Grids\\grid.json";
+                        json.LoadGrid();
                         break;
                     case "3":
                         Console.WriteLine("\nExiting...");

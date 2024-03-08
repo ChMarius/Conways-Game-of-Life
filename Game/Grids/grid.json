@@ -1,0 +1,10 @@
+{
+  "Rows": 4,  
+  "Columns": 5,  
+  "Cells": [
+    [false, false, true, false, false],
+    [false, false, false, true, false],
+    [false, true, true, true, false],
+    [false, false, false, false, false]
+  ]
+}
