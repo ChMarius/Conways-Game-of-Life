@@ -3,17 +3,11 @@ using System.Data;
 namespace GameOfLife
 {
 
-    public class AutomatonSimulator
+    public static class AutomatonSimulator
     {
-        public Grid CurrentGrid;
-    
-
-
-        static void Updategrid()
+        
+        static void Rules(Grid grid)
         {
-
-
-            Grid grid = new(Rows, Columns, true);
             Grid newGrid = grid;
 
             for(int i = 0; i < grid.Columns; i++)
@@ -22,8 +16,22 @@ namespace GameOfLife
                 {
                     int neighbors = grid.GetLiveCellNeighborCount(i,j);
                     bool cellState = grid.Cells[i][j].GetCellState();
+
+                    if(cellState)
+                    {
+                        if(neighbors != 2 && neighbors != 3)
+                            newGrid.Cells[i][j].SetCellState(false);
+                    }
+                    else
+                    {
+                        if(neighbors == 3)
+                            newGrid.Cells[i][j].SetCellState(true);
+                    }
                 }
+
+                grid.UpdateGrid(newGrid);
             }
+             
         }
     }
 }
