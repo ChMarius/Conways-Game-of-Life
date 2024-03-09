@@ -15,21 +15,21 @@ namespace GameOfLife
                 for(int j = 0; j < grid.Rows; j++)
                 {
                     int neighbors = grid.GetLiveCellNeighborCount(i,j);
-                    bool cellState = grid.Cells[i][j].GetCellState();
+                    bool cellState = grid.Cells[i, j].GetCellState();
 
                     if(cellState)
                     {
                         if(neighbors != 2 && neighbors != 3)
-                            newGrid.Cells[i][j].SetCellState(false);
+                            newGrid.Cells[i, j].SetCellState(false);
                     }
                     else
                     {
                         if(neighbors == 3)
-                            newGrid.Cells[i][j].SetCellState(true);
+                            newGrid.Cells[i, j].SetCellState(true);
                     }
                 }
 
-                grid.UpdateGrid(newGrid);
+                grid.UpdateGrid(newGrid.Cells);
             }
              
         }
