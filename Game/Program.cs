@@ -17,19 +17,27 @@ namespace GameOfLife
                 Console.Write("Select an option: ");
 
                 var option = Console.ReadLine();
-
+                JsonStorage json=new();
                 switch (option)
                 {
                     case "1":
                         Console.WriteLine("\nNo");
+                        int rows = 3;
+                        int columns = 6;
+                        int generation = 2;
+
+                        Grid grid = new(rows,columns);
+                        grid.RandomizeGrid();
+                        grid.SetGeneration(generation);
+                        json.StoreGrid(grid);
                         // ask user for rows (4-100)
                         // ask user for columns (4-100)
                         // init grid
                         break;
                     case "2":
-                        Console.WriteLine("\nUnsupported for now");
-                        // ask user for path to json file (absolute?)
-                        // validate the file user chose, like format and min/max sizes (if it even exists lmao)
+                        //JsonStorage.filePath ="Grids\\grid.json";
+                        string filePath ="Grids\\grid.json";
+                        json.LoadGrid(filePath);
                         break;
                     case "3":
                         Console.WriteLine("\nExiting...");

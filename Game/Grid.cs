@@ -2,25 +2,35 @@ namespace GameOfLife
 {
     public class Grid : IGrid
     {
-        public Cell[,] Cells { get; private set; }
+        public Cell[,] Cells { get; set; }
         public int Generation { get; private set; }
         public int Rows { get; private set; }
         public int Columns { get; private set; }
-        public Grid(int rows, int columns, bool randomize)
+        public Grid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
+            Generation = 0;
             Cells = new Cell[columns, rows];
             for (int i = 0; i < Columns; i++)
                 for (int j = 0; j < Rows; j++)
                     Cells[i,j] = new Cell();
         }
-        private void RandomizeGrid()
+
+        /*public void SetGrid()
+        {
+            for (int i = 0; i < Columns; i++)
+                for (int j = 0; j < Rows; j++)
+                   if(Cells[i,j].CellState) { Console.Write("O"); }
+                   else { Console.Write("."); }
+        }*/
+        
+        public void RandomizeGrid()
         {
             Random rand = new();
             for (int i = 0; i < Columns; i++)
                 for (int j = 0; j < Rows; j++)
-                    Cells[i, j].SetCellState(rand.NextDouble() >= 0.5);
+                    Cells[i,j].SetCellState(rand.NextDouble() >= 0.5);
         }
         public void SetGeneration(int generation)
         {
@@ -28,7 +38,6 @@ namespace GameOfLife
         }
         public void UpdateGrid(Cell[,] newGridState)
         {
-            SetGeneration(Generation + 1);
             Cells = newGridState;
         }
         public int GetLiveCellNeighborCount(int x, int y)
