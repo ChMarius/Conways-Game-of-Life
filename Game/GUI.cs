@@ -9,6 +9,15 @@ namespace Conways_Game_of_Life
 
     public class Menu
     {
+        private int currentSelection;
+
+        public int CurrentSelection
+        {
+            get { return currentSelection; }
+            set { currentSelection = value; }
+        }
+
+
         private string text;
 
         public string Text
@@ -44,12 +53,14 @@ namespace Conways_Game_of_Life
             this.Options = Options;
             this.Width = FindMenuWidth();
             this.Text = FillText();
+            this.CurrentSelection = 0;
         }
         public Menu(int Width, string[] Options)
         {
             this.Width = Width;
             this.Options = Options;
             this.Text = FillText();
+            this.CurrentSelection = 0;
         }
 
         private int FindMenuWidth()
@@ -79,14 +90,14 @@ namespace Conways_Game_of_Life
 
             int OptionCounter = 1;
 
-            for (int Y = 0; Y < (Options.Length - 1) * 2; Y++)
+            for (int Y = 1; Y < (Options.Length - 1) * 2; Y++)
             {
                 TempText.Append('│');
 
                 if (Y % 2 != 0)
                 {
                     TempText.Append(' ' + Options[OptionCounter]
-                        + new string(' ', Width - Options[OptionCounter].Length));
+                        + new string(' ', Width - 3 - Options[OptionCounter].Length));
                     OptionCounter++;
                 }
                 else
@@ -106,9 +117,31 @@ namespace Conways_Game_of_Life
             return TempText.ToString();
         }
 
+        public void MoveCursor(Direction MoveDirection)
+        {
+            Console.Write(' ');
+            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+
+            if (MoveDirection == Direction.Up && CurrentSelection - 1 >= 0)
+            {
+                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 2);
+                CurrentSelection--;
+            }
+            else if(MoveDirection == Direction.Down && CurrentSelection < Options.Length - 2)
+            {
+                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop + 2);
+                CurrentSelection++;
+            }
+
+            Console.Write('>');
+            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+        }
+
         public void PrintMenu()
         {
+            Console.Clear();
             Console.WriteLine(@text);
+            Console.SetCursorPosition(1, 2);
         }
     }
 }

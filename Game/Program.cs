@@ -23,33 +23,17 @@ namespace GameOfLife
 
             while (continueDisplay)
             {
-                Console.WriteLine("\nConway's Game of Life");
-                Console.WriteLine("1. Create a new random grid");
-                Console.WriteLine("2. Load grid from JSON file");
-                Console.WriteLine("3. Exit");
-                Console.Write("Select an option: ");
-
-                var option = Console.ReadLine();
-
-                switch (option)
+                switch(Console.ReadKey().Key)
                 {
-                    case "1":
-                        Console.WriteLine("\nNo");
-                        // ask user for rows (4-100)
-                        // ask user for columns (4-100)
-                        // init grid
+                    case ConsoleKey.UpArrow:
+                        MainMenu.MoveCursor(Menu.Direction.Up);
                         break;
-                    case "2":
-                        Console.WriteLine("\nUnsupported for now");
-                        // ask user for path to json file (absolute?)
-                        // validate the file user chose, like format and min/max sizes (if it even exists lmao)
-                        break;
-                    case "3":
-                        Console.WriteLine("\nExiting...");
-                        continueDisplay = false;
+                    case ConsoleKey.DownArrow:
+                        MainMenu.MoveCursor(Menu.Direction.Down);
                         break;
                     default:
-                        Console.WriteLine("\nInvalid option. Please try again.");
+                        Console.SetCursorPosition(Console.CursorLeft - 2, Console.CursorTop);
+                        Console.Write(' ');
                         break;
                 }
             }
