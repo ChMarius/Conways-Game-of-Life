@@ -2,54 +2,48 @@ using System.Text.Json;
 
 namespace GameOfLife
 {
-    public struct SerializableGrid // move this somewhere else or refactor, please - Dan
-    {
-        public int generation { get; private set; }
-        public int rows { get; private set; }
-        public int columns { get; private set; }
-        public bool[][] grid { get; private set; }
-        public SerializableGrid(int inputRows, int inputColumns, bool[][] inputGrid, int inputGen)
-        {
-            columns = inputColumns;
-            rows = inputRows;
-            grid = inputGrid;
-            generation = inputGen;
-        }
-    }
     public class JsonStorage : IStorage
     {
-        public static string filePath;
-        public void LoadGrid()
+        // The Cells array in Grid cannot be serialized to JSON directly, so instead we use the struct below.
+        public struct JsonGrid(Grid inputGrid)
         {
-            var gridJson = File.ReadAllText(filePath);
-            Grid grid = JsonSerializer.Deserialize<Grid>(gridJson);
-            
+            public int Generation { get; set; } = inputGrid.Generation;
+            public int Rows { get; set; } = inputGrid.Rows;
+            public int Columns { get; set; } = inputGrid.Columns;
+            public bool[][] Grid { get; set; }
         }
-        public void StoreGrid()
+        public Grid LoadGrid(string filePath)
         {
-            int rows = 5;
-            int columns = 4;
-            int generation = 5;
+            string jsonString = File.ReadAllText(filePath);
+            JsonGrid jsonGrid = JsonSerializer.Deserialize<JsonGrid>(jsonString)!;
+            Grid grid = new(jsonGrid.Rows,jsonGrid.Columns);
 
-            Grid grid = new(rows,columns);
-            grid.RandomizeGrid();
-
-            // Convert 2D array of Cell objects into serializable jagged array of booleans.
-            bool[][] gridCells = new bool[columns][];
-            for (int i = 0; i < columns; i++)
+            for (int i = 0; i < jsonGrid.Columns; i++)
+                for (int j = 0; j < jsonGrid.Rows; j++)
+                    grid.Cells[i,j].SetCellState(jsonGrid.Grid[i][j]);
+            
+            return grid;
+        }
+        public void StoreGrid(Grid grid)
+        {
+            // Convert 2D array of Cell objects into serializable array of arrays of booleans.
+            bool[][] jsonCells = new bool[grid.Columns][];
+            for (int i = 0; i < grid.Columns; i++)
             {
-                bool[] gridCellRow = new bool[rows];
-                for (int j = 0; j < rows; j++)
-                    gridCellRow[j] = grid.Cells[i,j].GetCellState();
-                gridCells[i] = gridCellRow;
+                bool[] jsonGridRow = new bool[grid.Rows];
+                for (int j = 0; j < grid.Rows; j++)
+                    jsonGridRow[j] = grid.Cells[i,j].GetCellState();
+                jsonCells[i] = jsonGridRow;
             }
 
-            SerializableGrid serializableGrid = new(rows,columns,gridCells,generation);
+            JsonGrid jsonGrid = new(grid)
+            {
+                Grid = jsonCells
+            };
 
+            // TODO: generate file names dynamically
             string fileName = "Grids\\grid.json";
-
-            string jsonString = JsonSerializer.Serialize(serializableGrid);
-
+            string jsonString = JsonSerializer.Serialize(jsonGrid);
             File.WriteAllText(fileName,jsonString);
         }
     }

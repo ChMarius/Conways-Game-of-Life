@@ -38,7 +38,6 @@ namespace GameOfLife
         }
         public void UpdateGrid(Cell[,] newGridState)
         {
-            SetGeneration(Generation + 1);
             Cells = newGridState;
         }
         public int GetLiveCellNeighborCount(int x, int y)

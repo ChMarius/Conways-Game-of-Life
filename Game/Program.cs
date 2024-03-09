@@ -22,14 +22,22 @@ namespace GameOfLife
                 {
                     case "1":
                         Console.WriteLine("\nNo");
-                        json.StoreGrid();
+                        int rows = 3;
+                        int columns = 6;
+                        int generation = 2;
+
+                        Grid grid = new(rows,columns);
+                        grid.RandomizeGrid();
+                        grid.SetGeneration(generation);
+                        json.StoreGrid(grid);
                         // ask user for rows (4-100)
                         // ask user for columns (4-100)
                         // init grid
                         break;
                     case "2":
-                        JsonStorage.filePath ="Grids\\grid.json";
-                        json.LoadGrid();
+                        //JsonStorage.filePath ="Grids\\grid.json";
+                        string filePath ="Grids\\grid.json";
+                        json.LoadGrid(filePath);
                         break;
                     case "3":
                         Console.WriteLine("\nExiting...");

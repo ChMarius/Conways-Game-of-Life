@@ -2,7 +2,7 @@ namespace GameOfLife
 {
     public interface IStorage
     {
-        public void StoreGrid();
-        public void LoadGrid();
+        public void StoreGrid(Grid grid);
+        public Grid LoadGrid(string filePath);
     }
 }
