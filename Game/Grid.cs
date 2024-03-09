@@ -55,8 +55,8 @@ namespace GameOfLife
 
             bool topEdge = (y == 0);
             bool leftEdge = (x == 0);
-            bool rightEdge = (x >= Columns);
-            bool bottomEdge = (y >= Rows);
+            bool rightEdge = (x == Columns - 1);
+            bool bottomEdge = (y == Rows - 1);
 
             // Start at east, then iterate over all neighbors clockwise.
             if (!rightEdge && Cells[x+1, y].GetCellState()) // east

@@ -22,17 +22,32 @@ namespace GameOfLife
                 {
                     case "1":
                         Console.WriteLine("\nNo");
-                        int rows = 3;
-                        int columns = 6;
-                        int generation = 2;
+                        int rows = 100;
+                        int columns = 100;
+                        int generation = 0;
 
                         Grid grid = new(rows,columns);
                         grid.RandomizeGrid();
                         grid.SetGeneration(generation);
-                        json.StoreGrid(grid);
+                        //json.StoreGrid(grid);
                         // ask user for rows (4-100)
                         // ask user for columns (4-100)
                         // init grid
+
+                        // temp code for testing automaton sim, ctrl+c to quit
+                        while (true)
+                        {
+                            for (int i = 0; i < grid.Columns; i++)
+                            {
+                                for (int j = 0; j < grid.Rows; j++)
+                                    Console.Write(grid.Cells[i,j].GetCellState() ? "1" : "0");
+                                Console.Write('\n');
+                            }
+                            Thread.Sleep(1000);
+                            Console.Clear();
+                            grid = AutomatonSimulator.ApplyRules(grid);
+                        }
+
                         break;
                     case "2":
                         //JsonStorage.filePath ="Grids\\grid.json";
