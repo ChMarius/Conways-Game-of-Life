@@ -2,32 +2,42 @@ namespace GameOfLife
 {
     public class Grid : IGrid
     {
-        public List<List<Cell>> Cells { get; private set; } = new();
+        public Cell[,] Cells { get; set; }
         public int Generation { get; private set; }
         public int Rows { get; private set; }
         public int Columns { get; private set; }
-        public Grid(int rows, int columns, bool randomize)
+        public Grid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
-            if (randomize)
-                RandomizeGrid();
-        }
-        private void RandomizeGrid()
-        {
-            Random rand = new();
-            bool randomState = rand.NextDouble() >= 0.5;
+            Generation = 0;
+            Cells = new Cell[columns, rows];
             for (int i = 0; i < Columns; i++)
                 for (int j = 0; j < Rows; j++)
-                    Cells[i][j].SetCellState(randomState);
+                    Cells[i,j] = new Cell();
+        }
+
+        /*public void SetGrid()
+        {
+            for (int i = 0; i < Columns; i++)
+                for (int j = 0; j < Rows; j++)
+                   if(Cells[i,j].CellState) { Console.Write("O"); }
+                   else { Console.Write("."); }
+        }*/
+        
+        public void RandomizeGrid()
+        {
+            Random rand = new();
+            for (int i = 0; i < Columns; i++)
+                for (int j = 0; j < Rows; j++)
+                    Cells[i,j].SetCellState(rand.NextDouble() >= 0.5);
         }
         public void SetGeneration(int generation)
         {
             Generation = generation;
         }
-        public void UpdateGrid(List<List<Cell>> newGridState)
+        public void UpdateGrid(Cell[,] newGridState)
         {
-            SetGeneration(Generation + 1);
             Cells = newGridState;
         }
         public int GetLiveCellNeighborCount(int x, int y)
@@ -49,21 +59,21 @@ namespace GameOfLife
             bool bottomEdge = (y >= Rows);
 
             // Start at east, then iterate over all neighbors clockwise.
-            if (!rightEdge && Cells[x+1][y].GetCellState()) // east
+            if (!rightEdge && Cells[x+1,y].GetCellState()) // east
                 liveNeighbors++;
-            if (!rightEdge && !bottomEdge && Cells[x+1][y+1].GetCellState()) // southeast
+            if (!rightEdge && !bottomEdge && Cells[x+1,y+1].GetCellState()) // southeast
                 liveNeighbors++;
-            if (!bottomEdge && Cells[x][y+1].GetCellState()) // south
+            if (!bottomEdge && Cells[x,y+1].GetCellState()) // south
                 liveNeighbors++;
-            if (!bottomEdge && !leftEdge && Cells[x-1][y+1].GetCellState()) // southwest
+            if (!bottomEdge && !leftEdge && Cells[x-1,y+1].GetCellState()) // southwest
                 liveNeighbors++;
-            if (!leftEdge && Cells[x-1][y].GetCellState()) // west
+            if (!leftEdge && Cells[x-1,y].GetCellState()) // west
                 liveNeighbors++;
-            if (!leftEdge && !topEdge && Cells[x-1][y-1].GetCellState()) // northwest
+            if (!leftEdge && !topEdge && Cells[x-1,y-1].GetCellState()) // northwest
                 liveNeighbors++;
-            if (!topEdge && Cells[x][y-1].GetCellState()) // north
+            if (!topEdge && Cells[x,y-1].GetCellState()) // north
                 liveNeighbors++;
-            if (!topEdge && !rightEdge && Cells[x+1][y-1].GetCellState()) // northeast
+            if (!topEdge && !rightEdge && Cells[x+1,y-1].GetCellState()) // northeast
                 liveNeighbors++;
             
             return liveNeighbors;
