@@ -6,7 +6,7 @@ namespace GameOfLife
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             //Local variables that store information that will be used later to generate the grid
             int Rows = 0;
@@ -77,6 +77,18 @@ namespace GameOfLife
                         JSONPath = GUI.UpdateScene(ref Scene, ref CurrentMenu);
                         CurrentMenu = Scene[3].Links[0];
 
+                        Grid grid = new(rows,columns);
+                        grid.RandomizeGrid();
+                        grid.SetGeneration(generation);
+                        json.StoreGrid(grid);
+                        // ask user for rows (4-100)
+                        // ask user for columns (4-100)
+                        // init grid
+                        break;
+                    case "2":
+                        //JsonStorage.filePath ="Grids\\grid.json";
+                        string filePath ="Grids\\grid.json";
+                        json.LoadGrid(filePath);
                         break;
                     case 4:
                         //Here we trigger the actual simulation to start by checking the last menu has been passed

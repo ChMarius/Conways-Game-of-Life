@@ -16,16 +16,7 @@ namespace GameOfLife
                 for (int j = 0; j < Rows; j++)
                     Cells[i,j] = new Cell();
         }
-
-        /*public void SetGrid()
-        {
-            for (int i = 0; i < Columns; i++)
-                for (int j = 0; j < Rows; j++)
-                   if(Cells[i,j].CellState) { Console.Write("O"); }
-                   else { Console.Write("."); }
-        }*/
-        
-        public void RandomizeGrid()
+        public void Randomize()
         {
             Random rand = new();
             for (int i = 0; i < Columns; i++)
@@ -36,44 +27,47 @@ namespace GameOfLife
         {
             Generation = generation;
         }
-        public void UpdateGrid(Cell[,] newGridState)
+        public void Update(Cell[,] newGrid)
         {
-            Cells = newGridState;
+            if (Cells.GetLength(0) != newGrid.GetLength(0) || Cells.GetLength(1) != newGrid.GetLength(1))
+                throw new ArgumentOutOfRangeException("newGrid dimensions do not match those of existing grid!");
+            
+            Cells = newGrid;
         }
         public int GetLiveCellNeighborCount(int x, int y)
         {
             if (x < 0)
-                throw new ArgumentOutOfRangeException("x value cannot be less than 0.");
+                throw new ArgumentOutOfRangeException(x.ToString());
             else if (y < 0)
-                throw new ArgumentOutOfRangeException("y value cannot be less than 0.");
+                throw new ArgumentOutOfRangeException(y.ToString());
             else if (x >= Columns)
-                throw new ArgumentOutOfRangeException("x value cannot be equal to or more than total amount of columns in the grid.");
+                throw new ArgumentOutOfRangeException(x.ToString());
             else if (y >= Rows)
-                throw new ArgumentOutOfRangeException("y value cannot be equal to or more than total amount of rows in the grid.");
+                throw new ArgumentOutOfRangeException(y.ToString());
 
             int liveNeighbors = 0;
 
-            bool topEdge = (y == 0);
-            bool leftEdge = (x == 0);
-            bool rightEdge = (x >= Columns);
-            bool bottomEdge = (y >= Rows);
+            bool topEdge = y == 0;
+            bool leftEdge = x == 0;
+            bool rightEdge = x == Columns - 1;
+            bool bottomEdge = y == Rows - 1;
 
             // Start at east, then iterate over all neighbors clockwise.
-            if (!rightEdge && Cells[x+1,y].GetCellState()) // east
+            if (!rightEdge && Cells[x+1, y].GetCellState()) // east
                 liveNeighbors++;
-            if (!rightEdge && !bottomEdge && Cells[x+1,y+1].GetCellState()) // southeast
+            if (!rightEdge && !bottomEdge && Cells[x+1, y+1].GetCellState()) // southeast
                 liveNeighbors++;
-            if (!bottomEdge && Cells[x,y+1].GetCellState()) // south
+            if (!bottomEdge && Cells[x, y+1].GetCellState()) // south
                 liveNeighbors++;
-            if (!bottomEdge && !leftEdge && Cells[x-1,y+1].GetCellState()) // southwest
+            if (!bottomEdge && !leftEdge && Cells[x-1, y+1].GetCellState()) // southwest
                 liveNeighbors++;
-            if (!leftEdge && Cells[x-1,y].GetCellState()) // west
+            if (!leftEdge && Cells[x-1, y].GetCellState()) // west
                 liveNeighbors++;
-            if (!leftEdge && !topEdge && Cells[x-1,y-1].GetCellState()) // northwest
+            if (!leftEdge && !topEdge && Cells[x-1, y-1].GetCellState()) // northwest
                 liveNeighbors++;
-            if (!topEdge && Cells[x,y-1].GetCellState()) // north
+            if (!topEdge && Cells[x, y-1].GetCellState()) // north
                 liveNeighbors++;
-            if (!topEdge && !rightEdge && Cells[x+1,y-1].GetCellState()) // northeast
+            if (!topEdge && !rightEdge && Cells[x+1, y-1].GetCellState()) // northeast
                 liveNeighbors++;
             
             return liveNeighbors;

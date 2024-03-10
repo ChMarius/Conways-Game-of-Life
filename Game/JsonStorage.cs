@@ -18,6 +18,7 @@ namespace GameOfLife
             JsonGrid jsonGrid = JsonSerializer.Deserialize<JsonGrid>(jsonString)!;
             Grid grid = new(jsonGrid.Rows,jsonGrid.Columns);
 
+            // Convert array of array of booleans to 2D array of Cell objects.
             for (int i = 0; i < jsonGrid.Columns; i++)
                 for (int j = 0; j < jsonGrid.Rows; j++)
                     grid.Cells[i,j].SetCellState(jsonGrid.Grid[i][j]);
@@ -41,7 +42,7 @@ namespace GameOfLife
                 Grid = jsonCells
             };
 
-            string fileName = $@"Grids\\grid-{DateTime.Now:yyyy-dd-M-HH-mm-ss}.json";
+            string fileName = $@"Grids\\grid-{DateTime.Now:yyyy-dd-M-HH-mm-ss}.json"; // All saved files contain a date/timestamp.
             string jsonString = JsonSerializer.Serialize(jsonGrid);
             File.WriteAllText(fileName,jsonString);
         }
