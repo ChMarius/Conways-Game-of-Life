@@ -1,5 +1,3 @@
-using System.Data;
-
 namespace GameOfLife
 {
     public static class AutomatonSimulator
@@ -20,7 +18,7 @@ namespace GameOfLife
                 }  
             }
 
-            grid.UpdateGrid(newGrid.Cells);
+            grid.Update(newGrid.Cells);
             return grid;
         }
     }

@@ -4,7 +4,7 @@ namespace GameOfLife
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             bool continueDisplay = true;
 
@@ -17,23 +17,20 @@ namespace GameOfLife
                 Console.Write("Select an option: ");
 
                 var option = Console.ReadLine();
-                JsonStorage json=new();
+                
                 switch (option)
                 {
                     case "1":
                         Console.WriteLine("\nNo");
-                        int rows = 100;
-                        int columns = 100;
-                        int generation = 0;
 
-                        Grid grid = new(rows,columns);
-                        grid.RandomizeGrid();
-                        grid.SetGeneration(generation);
-                        json.StoreGrid(grid);
                         // ask user for rows (4-100)
                         // ask user for columns (4-100)
-                        // init grid
+                        int rows = 100;
+                        int columns = 100;
 
+                        Grid grid = new(rows,columns);
+                        grid.Randomize();
+                        
                         // temp code for testing automaton sim, ctrl+c to quit
                         while (true)
                         {
@@ -50,8 +47,11 @@ namespace GameOfLife
 
                         break;
                     case "2":
-                        //JsonStorage.filePath ="Grids\\grid.json";
+                        // ask user for file path
                         string filePath ="Grids\\grid.json";
+
+                        JsonStorage json = new();
+                        //json.StoreGrid(grid);
                         json.LoadGrid(filePath);
                         break;
                     case "3":
