@@ -29,7 +29,7 @@ namespace GameOfLife
                         Grid grid = new(rows,columns);
                         grid.RandomizeGrid();
                         grid.SetGeneration(generation);
-                        //json.StoreGrid(grid);
+                        json.StoreGrid(grid);
                         // ask user for rows (4-100)
                         // ask user for columns (4-100)
                         // init grid
@@ -40,7 +40,7 @@ namespace GameOfLife
                             for (int i = 0; i < grid.Columns; i++)
                             {
                                 for (int j = 0; j < grid.Rows; j++)
-                                    Console.Write(grid.Cells[i,j].GetCellState() ? "1" : "0");
+                                    Console.Write(grid.Cells[i,j].GetCellState() ? "O" : ".");
                                 Console.Write('\n');
                             }
                             Thread.Sleep(1000);
