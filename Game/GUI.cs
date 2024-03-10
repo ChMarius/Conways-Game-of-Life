@@ -2,146 +2,76 @@
 
 namespace Conways_Game_of_Life
 {
-    internal static class GUI
+    public static class GUI
     {
-
-    }
-
-    public class Menu
-    {
-        private int currentSelection;
-
-        public int CurrentSelection
+        //This function Updates the whole scene and outputs the result to the screen
+        //In addition it also returns any input the user might have provided
+        public static string UpdateScene(ref Menu[] Scene, ref int CurrentMenu)
         {
-            get { return currentSelection; }
-            set { currentSelection = value; }
+            string Output = "";
+            //We are making a copy of all of the provided variables so that we can adjust them as needed and
+            //apply the differences to the original variables only once we are finished
+            int NextMenu = CurrentMenu;
+            
+            //We check if the current menu we are looking at is of type "Selectable" or "Prompt"
+            if (Scene[CurrentMenu].GetType().Name == "Selectable")
+            {
+                //We copy the current menu and update it based on user input
+                Selectable TempMenu = (Selectable)Scene[CurrentMenu];
+                switch (Console.ReadKey(false).Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        TempMenu.UpdateMenuSelection(GUI.Direction.Up);
+                        break;
+                    case ConsoleKey.DownArrow:
+                        TempMenu.UpdateMenuSelection(GUI.Direction.Down);
+                        break;
+                    case ConsoleKey.Enter:
+                        //If the Enter key is pressed the currently selected option is chosen
+                        //We store the index of the next menu that is to be displayed
+                        NextMenu = TempMenu.Links[TempMenu.CurrentSelection - 1];
+                        //We check if the Exit option is been chosen as it has a special condition
+                        if (NextMenu == -1)
+                        {
+                            //We Quit the program
+                            Quit();
+                            Environment.Exit(0);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                //We apply our chages to the original scene and current menu variables
+                Scene[CurrentMenu] = TempMenu;
+                CurrentMenu = NextMenu;
+            }
+            else if (Scene[CurrentMenu].GetType().Name == "Prompt")
+            {
+                //We copy the menu and get the validated input from the user
+                //We do this because the scene stores the menus as the abstract type "Menu"
+                //As such we can not be sure if the current menu is of type "Prompt" unless we try parse it
+                Prompt TempMenu = (Prompt)Scene[CurrentMenu];
+                
+                //We save the output
+                Output = TempMenu.ReadInput();
+            }
+
+            //We print the current menu to the screen and return the player input if applicable
+            Scene[CurrentMenu].PrintMenu();
+            return Output;
         }
 
-
-        private string text;
-
-        public string Text
+        private static void Quit()
         {
-            get { return text; }
-            set { text = value; }
-        }
-
-        private int width;
-
-        public int Width
-        {
-            get { return width; }
-            set { width = value; }
-        }
-
-        private string[] options;
-
-        public string[] Options
-        {
-            get { return options; }
-            set { options = value; }
+            Console.Clear();
+            Console.WriteLine("Thank you for playing");
+            Console.ReadKey(true);
         }
 
         public enum Direction
         {
             Up,
             Down
-        }
-
-        public Menu(string[] Options) 
-        {
-            this.Options = Options;
-            this.Width = FindMenuWidth();
-            this.Text = FillText();
-            this.CurrentSelection = 0;
-        }
-        public Menu(int Width, string[] Options)
-        {
-            this.Width = Width;
-            this.Options = Options;
-            this.Text = FillText();
-            this.CurrentSelection = 0;
-        }
-
-        private int FindMenuWidth()
-        {
-            Width = 0;
-            foreach (string Option in Options)
-            {
-                if (Width < Option.Trim().Length + 3)
-                {
-                    Width = Option.Trim().Length + 3;
-                }
-            }
-            return Width;
-        }
-
-        private string FillText()
-        {
-            StringBuilder TempText = new StringBuilder();
-
-            TempText.Append(Options[0]);
-            TempText.Append('\n');
-
-            TempText.Append('┌');
-            TempText.Append(new string('─', Width - 2));
-            TempText.Append('┐');
-            TempText.Append('\n');
-
-            int OptionCounter = 1;
-
-            for (int Y = 1; Y < (Options.Length - 1) * 2; Y++)
-            {
-                TempText.Append('│');
-
-                if (Y % 2 != 0)
-                {
-                    TempText.Append(' ' + Options[OptionCounter]
-                        + new string(' ', Width - 3 - Options[OptionCounter].Length));
-                    OptionCounter++;
-                }
-                else
-                {
-                    TempText.Append(new string(' ', Width - 2));
-                }
-
-                TempText.Append('│');
-                TempText.Append('\n');
-            }
-
-            TempText.Append('└');
-            TempText.Append(new string('─', Width - 2));
-            TempText.Append('┘');
-            TempText.Append('\n');
-
-            return TempText.ToString();
-        }
-
-        public void MoveCursor(Direction MoveDirection)
-        {
-            Console.Write(' ');
-            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-
-            if (MoveDirection == Direction.Up && CurrentSelection - 1 >= 0)
-            {
-                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 2);
-                CurrentSelection--;
-            }
-            else if(MoveDirection == Direction.Down && CurrentSelection < Options.Length - 2)
-            {
-                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop + 2);
-                CurrentSelection++;
-            }
-
-            Console.Write('>');
-            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-        }
-
-        public void PrintMenu()
-        {
-            Console.Clear();
-            Console.WriteLine(@text);
-            Console.SetCursorPosition(1, 2);
         }
     }
 }
