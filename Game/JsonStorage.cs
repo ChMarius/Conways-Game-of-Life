@@ -41,8 +41,7 @@ namespace GameOfLife
                 Grid = jsonCells
             };
 
-            // TODO: generate file names dynamically
-            string fileName = "Grids\\grid.json";
+            string fileName = $@"Grids\\grid-{DateTime.Now:yyyy-dd-M-HH-mm-ss}.json";
             string jsonString = JsonSerializer.Serialize(jsonGrid);
             File.WriteAllText(fileName,jsonString);
         }
