@@ -81,8 +81,16 @@ namespace GameOfLife
                         break;
                     case 3:
                         filePath = GUI.UpdateScene(ref Scene, ref CurrentMenu);
-                        grid = json.LoadGrid(filePath); // TODO: check if filePath is valid
-                        CurrentMenu = Scene[3].Links[0];
+                        try
+                        {
+                            grid = json.LoadGrid(filePath);
+                            CurrentMenu = Scene[3].Links[0];
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            // TODO: write message for user to try again
+                            CurrentMenu = 3;
+                        }
                         break;
                     case 4:
                         //Here we trigger the actual simulation to start by checking the last menu has been passed

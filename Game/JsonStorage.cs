@@ -14,17 +14,24 @@ namespace GameOfLife
         }
         public Grid LoadGrid(string filePath)
         {
-            string jsonString = File.ReadAllText(filePath);
-            JsonGrid jsonGrid = JsonSerializer.Deserialize<JsonGrid>(jsonString)!;
-            Grid grid = new(jsonGrid.Rows,jsonGrid.Columns);
-            grid.SetGeneration(jsonGrid.Generation);
+            try
+            {
+                string jsonString = File.ReadAllText(filePath);
+                JsonGrid jsonGrid = JsonSerializer.Deserialize<JsonGrid>(jsonString)!;
+                Grid grid = new(jsonGrid.Rows,jsonGrid.Columns);
+                grid.SetGeneration(jsonGrid.Generation);
 
-            // Convert array of array of booleans to 2D array of Cell objects.
-            for (int i = 0; i < jsonGrid.Columns; i++)
-                for (int j = 0; j < jsonGrid.Rows; j++)
-                    grid.Cells[i,j].SetCellState(jsonGrid.Grid[i][j]);
-            
-            return grid;
+                // Convert array of array of booleans to 2D array of Cell objects.
+                for (int i = 0; i < jsonGrid.Columns; i++)
+                    for (int j = 0; j < jsonGrid.Rows; j++)
+                        grid.Cells[i,j].SetCellState(jsonGrid.Grid[i][j]);
+                
+                return grid;
+            }
+            catch (FileNotFoundException)
+            {
+                throw;
+            }
         }
         public void StoreGrid(Grid grid)
         {
