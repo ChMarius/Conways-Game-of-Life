@@ -97,10 +97,15 @@ namespace GameOfLife
 
                         break;
                     case 3:
-                        JSONPath = GUI.UpdateScene(ref Scene, ref CurrentMenu);
+                        //We get a file name from the user
+                        //And test if the file can be found
+                        //If not prompts the user again
                         while (!JsonStorage.LoadGrid(JSONPath, out MainGrid))
                         {
+                            int temp = 3;
+                            JSONPath = GUI.UpdateScene(ref Scene, ref temp);
                             Console.WriteLine("The file name you entered could not be found. Please try again:");
+                            CurrentMenu = 3;
                         }
                         CurrentMenu = Scene[3].Links[0];
                         break;
