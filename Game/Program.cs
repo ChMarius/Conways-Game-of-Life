@@ -81,7 +81,7 @@ namespace GameOfLife
                         break;
                     case 3:
                         filePath = GUI.UpdateScene(ref Scene, ref CurrentMenu);
-                        grid = json.LoadGrid(filePath);
+                        grid = json.LoadGrid(filePath); // TODO: check if filePath is valid
                         CurrentMenu = Scene[3].Links[0];
                         break;
                     case 4:
@@ -108,7 +108,10 @@ namespace GameOfLife
 
         private static void StartSim(Grid grid)
         {
-            while(true) 
+            JsonStorage json = new();
+            bool advance = false;
+            bool continueDisplay = true;
+            while (continueDisplay) 
             {
                 Console.Clear();
 
@@ -124,10 +127,31 @@ namespace GameOfLife
                     Console.Write('\n');
                 }
 
-                Console.ReadKey(true);
+                ConsoleKey key = Console.ReadKey(true).Key;
+                switch (key)
+                {
+                    case ConsoleKey.N:
+                        advance = true;
+                        break;
+                    case ConsoleKey.S:
+                        json.StoreGrid(grid);
+                        break;
+                    case ConsoleKey.X:
+                        continueDisplay = false;
+                        break;
+                    default:
+                        break;
+                }
 
-                grid = AutomatonSimulator.ApplyRules(grid);
+                if (advance)
+                    grid = AutomatonSimulator.ApplyRules(grid);
+                advance = false;
             }
+
+            // TODO: go back to main menu
+            Console.Clear();
+            Console.WriteLine("Thanks for playing!");
+            Environment.Exit(0);
         }
     }
 }
