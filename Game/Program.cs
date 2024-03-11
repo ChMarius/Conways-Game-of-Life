@@ -11,7 +11,9 @@ namespace GameOfLife
             //Local variables that store information that will be used later to generate the grid
             int Rows = 0;
             int Columns = 0;
-            string JSONPath = "";
+            string filePath = "";
+            JsonStorage json = new();
+            Grid grid = new(Rows, Columns);
 
             //The "Menu System" stores all of the menus in a so called "Scene" which is just an array of the type Menu. Here we are storing which menu we are currently on
             int CurrentMenu = 0;
@@ -64,6 +66,8 @@ namespace GameOfLife
 
                         //we need to update the Current menu variable here
                         //because we only want to transition to the next menu after we have varified that the information provided by the user is correct
+                        grid = new(Rows, Columns);
+                        grid.Randomize();
                         CurrentMenu = Scene[1].Links[0];
                         break;
                     case 2:
@@ -71,15 +75,18 @@ namespace GameOfLife
                         {
                             Console.WriteLine("The text you inputed was not a valid number. Please try again:");
                         }
+                        grid = new(Rows, Columns);
+                        grid.Randomize();
                         CurrentMenu = Scene[2].Links[0];
                         break;
                     case 3:
-                        JSONPath = GUI.UpdateScene(ref Scene, ref CurrentMenu);
+                        filePath = GUI.UpdateScene(ref Scene, ref CurrentMenu);
+                        grid = json.LoadGrid(filePath);
                         CurrentMenu = Scene[3].Links[0];
                         break;
                     case 4:
                         //Here we trigger the actual simulation to start by checking the last menu has been passed
-                        StartSim();
+                        StartSim(grid);
                         break;
                     default:
                         //We want to check if the current menu variable is less than the amount of menus in the scene,
@@ -99,13 +106,27 @@ namespace GameOfLife
             }
         }
 
-        private static void StartSim()
+        private static void StartSim(Grid grid)
         {
             while(true) 
             {
                 Console.Clear();
-                Console.WriteLine("Game");
+
+                Console.WriteLine("Iteration " + grid.Generation);
+                Console.WriteLine("Press 'N' to advance to the next generation.");
+                Console.WriteLine("Press 'S' to save the current grid state to a file.");
+                Console.WriteLine("Press 'X' to exit the simulation.");
+                
+                for (int i = 0; i < grid.Columns; i++)
+                {
+                    for (int j = 0; j < grid.Rows; j++)
+                        Console.Write(grid.Cells[i,j].GetCellState() ? "O" : ".");
+                    Console.Write('\n');
+                }
+
                 Console.ReadKey(true);
+
+                grid = AutomatonSimulator.ApplyRules(grid);
             }
         }
     }
