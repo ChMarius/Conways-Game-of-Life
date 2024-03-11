@@ -19,6 +19,7 @@ namespace GameOfLife
             }
 
             grid.Update(newGrid.Cells);
+            grid.SetGeneration(grid.Generation + 1);
             return grid;
         }
     }

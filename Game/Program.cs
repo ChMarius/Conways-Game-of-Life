@@ -112,10 +112,10 @@ namespace GameOfLife
             {
                 Console.Clear();
 
-                Console.WriteLine("Iteration " + grid.Generation);
+                Console.WriteLine("Iteration " + grid.Generation + '\n');
                 Console.WriteLine("Press 'N' to advance to the next generation.");
                 Console.WriteLine("Press 'S' to save the current grid state to a file.");
-                Console.WriteLine("Press 'X' to exit the simulation.");
+                Console.WriteLine("Press 'X' to exit the simulation.\n");
                 
                 for (int i = 0; i < grid.Columns; i++)
                 {

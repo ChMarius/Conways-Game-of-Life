@@ -17,6 +17,7 @@ namespace GameOfLife
             string jsonString = File.ReadAllText(filePath);
             JsonGrid jsonGrid = JsonSerializer.Deserialize<JsonGrid>(jsonString)!;
             Grid grid = new(jsonGrid.Rows,jsonGrid.Columns);
+            grid.SetGeneration(jsonGrid.Generation);
 
             // Convert array of array of booleans to 2D array of Cell objects.
             for (int i = 0; i < jsonGrid.Columns; i++)
