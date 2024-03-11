@@ -11,11 +11,20 @@ namespace GameOfLife
             Rows = rows;
             Columns = columns;
             Generation = 0;
+            InitGrid(rows, columns);
+        }
+
+        public void InitGrid(int rows, int columns)
+        {
+            Rows = rows;
+            Columns = columns;
+            Generation = 0;
             Cells = new Cell[columns, rows];
             for (int i = 0; i < Columns; i++)
                 for (int j = 0; j < Rows; j++)
-                    Cells[i,j] = new Cell();
+                    Cells[i, j] = new Cell();
         }
+
         public void Randomize()
         {
             Random rand = new();

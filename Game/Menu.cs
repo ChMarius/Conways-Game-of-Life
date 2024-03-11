@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using Conways_Game_of_Life;
+using GameOfLife;
 
 namespace Conways_Game_of_Life
 {
@@ -49,8 +51,8 @@ namespace Conways_Game_of_Life
         //A function that prints the menu to the screen
         public virtual void PrintMenu()
         {
-            text = FillText();
             Console.Clear();
+            text = FillText();
             Console.WriteLine(@text);
         }
     }

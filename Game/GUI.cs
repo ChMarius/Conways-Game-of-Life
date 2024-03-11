@@ -1,9 +1,32 @@
 ﻿using System.Text;
+using GameOfLife;
 
 namespace Conways_Game_of_Life
 {
     public static class GUI
     {
+        public static string DisplayGrid(Grid Grid)
+        {
+            StringBuilder output = new StringBuilder();
+            for (int Y = 0; Y < Grid.Columns; Y++) 
+            {
+                for(int X = 0; X < Grid.Rows; X++)
+                {
+                    if (Grid.Cells[X,Y].CellState)
+                    {
+                        output.Append("██");
+                    }
+                    else
+                    {
+                        output.Append("░░");
+                    }
+                }
+                output.Append('\n');
+            }
+
+            return output.ToString();
+        }
+
         //This function Updates the whole scene and outputs the result to the screen
         //In addition it also returns any input the user might have provided
         public static string UpdateScene(ref Menu[] Scene, ref int CurrentMenu)
@@ -30,12 +53,22 @@ namespace Conways_Game_of_Life
                         //If the Enter key is pressed the currently selected option is chosen
                         //We store the index of the next menu that is to be displayed
                         NextMenu = TempMenu.Links[TempMenu.CurrentSelection - 1];
-                        //We check if the Exit option is been chosen as it has a special condition
+                        //Here we check for special conditions
                         if (NextMenu == -1)
                         {
                             //We Quit the program
                             Quit();
                             Environment.Exit(0);
+                        }
+                        if(CurrentMenu == 4 && TempMenu.CurrentSelection == 1)
+                        {
+                            TempMenu.PrintMenu();
+                            return "Advance";
+                        }
+                        if (CurrentMenu == 4 && TempMenu.CurrentSelection == 2)
+                        {
+                            TempMenu.PrintMenu();
+                            return "Save";
                         }
                         break;
                     default:
@@ -54,6 +87,7 @@ namespace Conways_Game_of_Life
                 
                 //We save the output
                 Output = TempMenu.ReadInput();
+                CurrentMenu = TempMenu.Links[0];
             }
 
             //We print the current menu to the screen and return the player input if applicable

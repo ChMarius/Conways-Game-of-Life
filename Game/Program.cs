@@ -11,6 +11,7 @@ namespace GameOfLife
             //Local variables that store information that will be used later to generate the grid
             int Rows = 0;
             int Columns = 0;
+            Grid MainGrid = new Grid(4,4);
             string JSONPath = "";
 
             //The "Menu System" stores all of the menus in a so called "Scene" which is just an array of the type Menu. Here we are storing which menu we are currently on
@@ -25,9 +26,9 @@ namespace GameOfLife
             string[] MainMenuOptions = new string[]
             {
                 "Conway's Game of Life",
-                "1. Create a new random grid",
-                "2. Load grid from JSON file",
-                "3. Exit"
+                "Create a new random grid",
+                "Load grid from JSON file",
+                "Exit"
             };
 
             //Here we define where each menu option is going to lead to after being selected
@@ -38,21 +39,38 @@ namespace GameOfLife
 
             Menu MainMenu = new Selectable(MainMenuOptions, MainMenuLinks);
 
+            string[] SimulationMenuOptions = new string[]
+            {
+                "Options",
+                "Advance simulation",
+                "Save",
+                "Exit"
+            };
+
+            //Here we define where each menu option is going to lead to after being selected
+            int[] SimulationMenuLinks = new int[]
+            {
+                4, 4, -1
+            };
+
+            Menu SimulationMenu = new Selectable(SimulationMenuOptions, SimulationMenuLinks);
+
             //The Prompt type requires a lot less information so they can be intialized in a single line with an (Prompt, Next menu location in scene)
             Menu NewGridRowsPrompt = new Prompt("Enter the number of rows for the grid (4-100): ", 2);
             Menu NewGridColumnsPrompt = new Prompt("Enter the number of columns for the grid (4-100): ", 4);
-            Menu JSONFilePrompt = new Prompt("Please provide a path for a JSON file to load the grid from: ", 4);
+            Menu JSONLoadFilePrompt = new Prompt("Please provide a path for a JSON file to load the grid from: ", 4);
 
             //This is where we create the "Scene" and add all of the Menus to it
-            Menu[] Scene = new Menu[] {MainMenu, NewGridRowsPrompt, NewGridColumnsPrompt, JSONFilePrompt};
+            Menu[] Scene = new Menu[] {MainMenu, NewGridRowsPrompt, NewGridColumnsPrompt, JSONLoadFilePrompt, SimulationMenu};
 
             //We start by printing the first menu from the scene to the screen
             Scene[0].PrintMenu();
 
-            bool continueDisplay = true;
+            bool IsRunning = true;
 
-            while (continueDisplay)
+            while (IsRunning)
             {
+
                 //This code gets and varifies information from the interface/user
                 switch (CurrentMenu)
                 {
@@ -72,15 +90,37 @@ namespace GameOfLife
                             Console.WriteLine("The text you inputed was not a valid number. Please try again:");
                         }
                         CurrentMenu = Scene[2].Links[0];
+
+                        //We update the grid and randomize it
+                        MainGrid.InitGrid(Rows, Columns);
+                        MainGrid.Randomize();
+
                         break;
                     case 3:
                         JSONPath = GUI.UpdateScene(ref Scene, ref CurrentMenu);
+                        while (!JsonStorage.LoadGrid(JSONPath, out MainGrid))
+                        {
+                            Console.WriteLine("The file name you entered could not be found. Please try again:");
+                        }
                         CurrentMenu = Scene[3].Links[0];
                         break;
+
                     case 4:
-                        //Here we trigger the actual simulation to start by checking the last menu has been passed
-                        StartSim();
+
+                        Scene[CurrentMenu].Options[0] = GUI.DisplayGrid(MainGrid);
+                        Scene[CurrentMenu].PrintMenu();
+                        string debug = GUI.UpdateScene(ref Scene, ref CurrentMenu);
+                        switch (debug)
+                        {
+                            case "Advance":
+                                MainGrid = AutomatonSimulator.ApplyRules(MainGrid);
+                                break;
+                            case "Save":
+                                JsonStorage.StoreGrid(MainGrid);
+                                break;
+                        }
                         break;
+
                     default:
                         //We want to check if the current menu variable is less than the amount of menus in the scene,
                         //because since we are using it as a trigger it can become larger or smaller than the amount of menus in the scene
@@ -90,22 +130,6 @@ namespace GameOfLife
                         }
                         break;
                 }
-
-                if (CurrentMenu < Scene.Length)
-                {
-                    //The menu needs to be updated again since the current menu value has been changed
-                    Scene[CurrentMenu].PrintMenu();
-                }
-            }
-        }
-
-        private static void StartSim()
-        {
-            while(true) 
-            {
-                Console.Clear();
-                Console.WriteLine("Game");
-                Console.ReadKey(true);
             }
         }
     }
